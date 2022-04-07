@@ -1,0 +1,250 @@
+{% load staticfiles backend_tags %}
+<div class="container-fluid">
+    <div id="ui-view" style="opacity: 1; margin-bottom: 10px;">
+        <div class="animated fadeIn">
+            <div class="row">
+				
+				<!-- Submission -->
+                <div class="col-md-8" id="codeview">
+                    <div class="border-primary">
+						<ul class="nav nav-tabs border-primary" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#problem" id="tabproblem" role="tab"
+                                    aria-controls="home" aria-expanded="true"><i class="icon-doc"></i> Problem</a>
+                            </li>                       
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#codeeditor" id="tabcodeeditor" role="tab"
+                                    aria-controls="home" aria-expanded="true"><i class="icon-doc"></i> Code Editor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#listbot" id="tablistbot" role="tab"
+                                    aria-expanded="false"><i class="fa fa-book"></i> Submissions</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+							<div class="tab-pane active" id="problem" role="tabpanel" aria-expanded="true">
+                                <div class="row" id="toolmenu">
+                                    <div class="form-group col-sm-8">
+										{{ question.description | safe }}
+                                    </div>
+                                </div>
+                              </div>
+							
+                            <div class="tab-pane" id="codeeditor" role="tabpanel" aria-expanded="true">
+                                <div class="row" id="toolmenu">
+                                    <div class="form-group col-sm-4">
+                                        <select class="form-control" id="language" onchange="changeLanguage(this)">
+                                            {% if lastCode %}
+                                                {% if lastCode.language == 'java' %}
+                                                    <option value="cpp"> C++ (Gcc 5.4)</option>
+                                                    <option value="java" selected>Java (version 1.8)</option>
+                                                {% else %}
+                                                    <option value="cpp" selected > C++ (Gcc 5.4)</option>
+                                                    <option value="java">Java (version 1.8)</option>
+                                                {% endif %}
+                                            {% else %}
+                                                <option value="cpp" selected > C++ (Gcc 5.4)</option>
+                                                <option value="java">Java (version 1.8)</option>
+                                            {% endif %}
+                                                <option value="">Want more? please contact us</option>
+                                        </select>
+
+                                    </div>
+
+                                    <div class="form-group col-sm-8">
+                                        <a class="btn btn-outline-info  float-right" style="margin-left: 10px;"
+                                            href="#fullscreen" target="_expand">
+                                            <i class="fa fa-angle-right" id="expandButton"></i>
+                                        </a>
+
+                                        <a class="btn btn-outline-info float-right" style="margin-left: 10px;" href="#"
+                                            data-target="#popupinfo" data-toggle="modal">
+                                            <i class="icon-info"></i>
+                                        </a>
+                                        <div class="input-group-btn float-right">
+                                            <a class="btn btn-primary" href="#" id="submit">
+                                                <i class="icon-rocket"></i> Submit
+                                            </a>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div id="editor" style="margin-left: -15px;min-height: 70vh"></div>
+
+                            </div>
+                            <div class="tab-pane" id="listbot" role="tabpanel" aria-expanded="false">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- HERER -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" id="console">
+                    <div class="border-primary mb-3">
+                        <ul class="nav nav-tabs border-primary" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#iframeResult" role="tab"
+                                    aria-expanded="true">
+                                    <i class="icon-fire"></i> Console
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" role="tabpanel" aria-expanded="true">
+								<div id="iframeResult">
+									
+									Click <b><i class="icon-rocket"></i> Submit</b> button to build your code and run.
+								</div>
+								<!-- Testcase Detail -->
+								<div class="card-header" id="test-card-detail" style="display: none">
+									<div class="card-header" id="testcase-detail-header"></div>
+									<div class="card-body" id="testcase-detail-body">
+									<!-- Holder for JS handler -->
+									</div>
+								</div>
+									
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="popupinfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Clrl+Space</td>
+                            <td>Complete</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl+F</td>
+                            <td>Find</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl+H</td>
+                            <td>Replace</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl+/</td>
+                            <td>Toggle comment</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl-U</td>
+                            <td>Change to upper case</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl-Shift-U</td>
+                            <td>Change to lower case</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script src="{% static '/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static '/ace-builds/src-noconflict/ext-language_tools.js' %}"></script>
+
+<script>
+    ace.require("ace/ext/language_tools");
+    var editor = ace.edit("editor");
+    var code = String.raw`{{ lastCode.content|safe }}`
+    editor.setTheme("ace/theme/sqlserver");
+
+    editor.setOptions({
+        enableBasicAutocompletion: true,
+        enableSnippets: true,
+        enableLiveAutocompletion: true
+    });
+    {% if lastCode.language == 'java' %}
+    editor.getSession().setMode("ace/mode/java");
+    {% else %}
+    editor.getSession().setMode("ace/mode/c_cpp");
+    {% endif %}
+    if (code == ``)
+        code = "#include <iostream>\n" +
+                "using namespace std;\n" +
+                "\n" +
+                "int main()\n" +
+                "{\n" +
+                "    // your code goes here" +
+                "    \n    int val;\n    cin >> val;\n    cout << val;\n" +
+                "    return 0;\n" +
+                "}"
+    editor.setValue(code);
+
+    function changeLanguage(arg) {
+        if (arg.value == 'cpp') {
+            editor.getSession().setMode("ace/mode/c_cpp");
+            {% if lastCode.language == 'cpp' %}
+                editor.setValue(code);
+             {% else %}
+                editor.setValue(
+                "#include <iostream>\n" +
+                "using namespace std;\n" +
+                "\n" +
+                "int main()\n" +
+                "{\n" +
+                "    // your code goes here" +
+                "    \n    int val;\n    cin >> val;\n    cout << val;\n" +
+                "    return 0;\n" +
+                "}"
+                );
+            {% endif %}
+        } else {
+            editor.getSession().setMode("ace/mode/java");
+            {% if lastCode.language == 'java' %}
+                editor.setValue(code);
+            {% else %}
+                editor.setValue(
+                "import java.util.*;\n" +
+                "import java.lang.*;\n" +
+                "import java.io.*;\n" +
+                "\n" +
+                "public class AiContest2019// don't replace with another name!\n" +
+                "{              \n" +
+                "	public static void main(String[] args)\n" +
+                "	{\n" +
+                "		// your code goes here\n" +
+                "		Scanner s = new Scanner(System.in);\n" +
+                "		int val = s.nextInt();\n" +
+                "		System.out.print(val);\n" +
+                "	}\n" +
+                "}"
+                );
+            {% endif %}
+        }
+    }
+    var height = $(window).height() / 1.4;
+    document.getElementById('editor').style.minHeight = height + "px";
+
+</script>

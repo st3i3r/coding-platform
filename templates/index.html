@@ -1,0 +1,57 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="AI Contest 2019 - Gameloft Đà Nẵng">
+<meta name="author" content="kien.nguyenbinh@gameloft.com">
+
+<title>Code Contest 2022 - LG VS DCV Đà Nẵng</title>
+
+<!-- Icons -->
+<link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
+<link href="{% static "css/simple-line-icons.min.css" %}" rel="stylesheet">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@700&display=swap" rel="stylesheet"> 
+
+<!-- Main styles for this application -->
+<link href="{% static "css/style.css" %}" rel="stylesheet">
+
+<!-- Styles required by this views -->
+<link href="{% static "css/toastr.css" %}" rel="stylesheet">
+</head>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show pace-done sidebar-minimized aside-menu-hidden">
+    <header id="app-header" class="app-header navbar">
+        {% include "part/header.html" %}
+    </header>
+    <div class="app-body">
+        <div id="sidebar-menu" class="sidebar">
+            {% include "part/sidebar.html" %}            
+        </div>
+        <main class="main">
+            <div class="container-fluid">
+                <div id="ui-view" style="opacity: 1;">
+                </div>
+            </div>
+        </main>
+
+        <aside id="aside-menu" class="aside-menu">
+            {% include "part/aside-menu.html" %}            
+        </aside>
+
+    </div>
+    <footer id="app-footer" class="app-footer">
+        {% include "part/footer.html" %}            
+    </footer>
+
+        {% include "part/js-file.html" %}            
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+{% load static staticfiles %}
+
+<a class="navbar-brand" href="/" target="_top">
+    <img class="navbar-brand-full" src="{% get_media_prefix %}img/logo_dark.png" alt="Coding Contest" width="40"
+        height="30">
+</a>
+<button class="navbar-toggler sidebar-toggler d-md-down-none" id="btnsidebar" type="button">
+    <span class="navbar-toggler-icon"></span>
+</button>
+<ul class="nav navbar-nav d-md-down-none">
+    <li class="nav-item px-3">
+        <a class="nav-link" href="#dashboard">Dashboard</a>
+    </li>
+    <li class="nav-item px-3">
+        <a class="nav-link" href="#challenge">Challenge</a>
+    </li>
+    <li class="nav-item px-3">
+        <a class="nav-link" href="https://join.skype.com/G3yvOQuI4bVC" target="_blank">Chat & support</a>
+    </li>
+
+</ul>
+<ul class="nav navbar-nav ml-auto">
+{% if user.is_authenticated %}
+	{% include "page/notification.html" %}
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+            aria-expanded="false">
+            <img src="{% get_media_prefix %}img/avatar.png" class="img-avatar">
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <div class="dropdown-header text-center">
+                <strong>Settings</strong>
+            </div>
+            <div class="divider"></div>
+            <a class="dropdown-item" href="#profile"><i class="fa fa-user"></i> Profile</a>
+        </div>
+    </li>
+{% endif %}
+</ul>
+<button class="navbar-toggler aside-menu-toggler" id="btnasidebar" type="button">
+    <span class="navbar-toggler-icon"></span>
+</button>

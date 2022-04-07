@@ -1,0 +1,73 @@
+{% load staticfiles backend_tags %}
+<div class="row">
+    <div class="col-lg-12">
+        <form id="formprofile" action="/profile" method="post" name="updateprofile">
+            {% csrf_token %}
+            <div class="card">
+                <div class="card-header">
+                    <strong>Basic info</strong>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="company">First Name</label>
+                            <input type="text" class="form-control" name="firstname" id="firstname"
+                                value="{{ profile_user.first_name }}" placeholder="Enter your first name">
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="company">Last Name</label>
+                            <input type="text" class="form-control" name="lastname" id="lastname"
+                                value="{{profile_user.last_name}}" placeholder="Enter your last name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="vat">Email </label>
+                            <input type="text" class="form-control" name="email" id="email"
+                                value="{{ profile_user.email }}" placeholder="your email">
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="street">Phone</label>
+                            <input type="text" class="form-control" name="phonenumber" id="phonenumber"
+                                value="{{ profile_player.phoneNumber }}" placeholder="Enter your phone number">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="street">University/college</label>
+                            <input type="text" class="form-control" name="university"
+                                value="{{ profile_player.university|default:"" }}"
+                                placeholder="Enter your university/college">
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="street">Year of graduation</label>
+                            <input type="text" class="form-control" name="graduation" id="graduation"
+                                value="{{ profile_player.graduation|default:"" }}" maxlength="4"
+                                placeholder="Enter year of graduation">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-6">
+                            <label for="street">Bot log</label>
+                            <select type="select" class="form-control" name="botlog" {{ is_EnableEdit|isConditionTag:'disabled' }}>
+                                <option value=1 {% if profile_player.botLog == 1 %} selected {% endif %}>Turn on
+                                </option>
+                                <option value=0 {% if profile_player.botLog == 0 %} selected {% endif %}>Turn off
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="street">Join a tournament</label>
+                            <select type="select" class="form-control" name="join" {{ is_EnableEdit|isConditionTag:'disabled' }}>
+                                <option value=0 {% if profile_player.isJoin == False %} selected {% endif %}>No</option>
+                                <option value=1 {% if profile_player.isJoin == True %} selected {% endif %}>Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <a href="#formprofile" class="btn btn-primary" name="submitprofile"><i
+                            class="fa fa-dot-circle-o"></i> Submit</a>
+                    <!--/.row-->
+                </div>
+            </div>
+        </form>
+    </div>

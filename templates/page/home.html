@@ -1,0 +1,73 @@
+{% load static staticfiles %}
+<!-- List Notifies -->
+<div class="container-fluid" name="notification">
+    <div class="animated fadeIn">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fa fa-align-justify"></i> <b>Notification</b>
+                    </div>
+                    <div class="card-body">
+                        {% if notifies.count > 0 %}
+                        {% for notify in notifies %}                                             
+                        <div class="col-lg-12">
+                            <div class="card border-primary">
+                                <div class="card-header">                                    
+                                    <a data-toggle="collapse" href="#" data-target="#collapse{{ notify.id }}">
+                                        <div class="message">
+                                            <div class="text-truncate font-weight-bold">{{ notify.title }}</div>
+                                        </div>
+                                    </a>                                    
+                                </div>
+                                <div class="card-body collapse in" id="collapse{{ notify.id }}">
+                                    {{notify.message }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        {% else %}
+                        <div class="text-truncate font-weight">Please log in to see notification</div>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+            </div>
+            <!--/.col-->
+        </div>
+        <!--/.row-->
+    </div>
+</div>
+<!-- /.conainer-fluid notification-->
+<div class="modal fade" id="feedback" role="dialog">
+    <div class="modal-dialog modal-lg modal-primary">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Send Feedback</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formFeedback" method="post" class="comment-form" action="/feedback">
+                    {% csrf_token %}
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="includeEmail"> Include my email</label></div>
+                    <small class="form-text text-muted">We won't share your information</small>
+                    <p id="text-msg" class="text-danger"></p>
+                    <div class="form-group">
+                        <label for="title">Feedback</label>
+                        <input type="text" class="form-control" id="title" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="content">Description</label>
+                        <textarea name="content" name="textarea-input" id="content" rows="9"
+                                  class="form-control"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#formFeedback" id="btnFeedback" data-dismiss="modal" class="btn btn-primary">Send</a>
+            </div>
+        </div>
+    </div>
+</div>

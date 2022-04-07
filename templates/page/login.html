@@ -1,0 +1,55 @@
+{% load staticfiles %}
+<div class="row justify-content-center" style="margin-top: 10%">
+    <div class="col-md-4">
+        <div class="card-group">
+            <div class="card p-4">
+                <div class="card-header">
+                    <h1>Login</h1>
+                    <p class="text-muted">Sign In to your account</p>
+                </div>
+                <div class="card-body">
+                    <p id="text-msg" class="text-danger"></p>
+                    <form class="card-body" id="formlogin" action="/login" method="POST">
+                        {% csrf_token %}
+                        <div class="input-group mb-3">
+                            <span class="input-group-addon"><i class="icon-user"></i></span>
+                            <input type="text" name="username" class="form-control" placeholder="Username">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-addon"><i class="icon-lock"></i></span>
+                            <input type="password" name="password" class="form-control" placeholder="Password"
+                                onkeypress="submitLogin()">
+                        </div>
+                        {% comment %} <div class="col-6 text-right">
+                            <a class="btn btn-link px-0" href="#forgotpassword">Forgot password?</a>
+                        {% endcomment %}
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-6">
+                            <a id="login" class="btn btn-primary px-4" href="#login">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% comment %} <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%">
+                <div class="card-body text-center">
+                    <div>
+                        <h2>Sign up</h2>
+                        <p>If you don't already have an account, register for one.</p>
+                        <a class="btn btn-primary active mt-3" href="#register">Register</a>
+                    </div>
+                </div>
+            </div> {% endcomment %}
+        </div>
+    </div>
+</div>
+<script>
+    function submitLogin() {
+        // Press enter to login
+        if (event.keyCode == '13') {
+            $("#login").click();
+        }
+    }
+</script>

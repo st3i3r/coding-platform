@@ -1,0 +1,40 @@
+<!-- {% load staticfiles %} -->
+{% load staticfiles backend_tags %}
+
+<div class="container-fluid">
+    <div id="ui-view" style="opacity: 1; margin-bottom: 10px;">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="col-md-12">
+                {% for round in data %}
+                    <div class="card">
+                        <div class="card-header">
+                            <strong>{{ round.name }}</strong>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="round-{{ round.id }}">
+                                {% for group in round.groups %}
+                                <div class="card">
+                                    <div class="card-header">
+                                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#group-{{group.id}}" aria-expanded="false">
+                                            <strong>{{ group.name}}</strong>
+                                        </button>
+                                        <a href="#" data-target="#result-round-{{round.id}}-group-{{group.id}}" data-toggle="modal">(show result)</a>
+                                    </div>
+                                    <div id="group-{{group.id}}" class="collapse" data-parent="#round-{{ round.id }}">
+                                        <div class="card-body">
+                                            {% include "page/tournament/tournament_table.html" with listmatch=group.matchs only %}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include "page/tournament/result.html" %}

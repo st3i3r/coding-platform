@@ -1,0 +1,23 @@
+{% load static staticfiles %}
+<div class="tab-pane active" id="top10" role="tabpanel" aria-expanded="false">
+	<div class="callout callout-primary m-0 py-2 text-muted text-center bg-light text-uppercase">
+		<small><b>Top 10</b></small>
+	</div>
+
+	{% for bot,score in leader_boards|slice:":10" %}
+	<div class="callout callout-{% cycle "warring" "success" "info" "danger" "primary" %} m-0 py-3">
+		
+		<div>
+			<i class="icon-user"></i><a href="#">&nbsp;{{bot}}</a>
+		</div>
+
+		<!-- <small class="text-muted mr-3"><i class="icon-trophy"></i>&nbsp;{{ score }}</small> -->
+		<small class="text-muted"><i class="icon-chart"></i>&nbsp; {{ forloop.counter }} </small>
+	</div>
+	{% endfor %}
+
+	<hr class="mx-3 my-0">
+	<div class="callout callout-danger m-0 py-2 text-muted text-center bg-light text-uppercase">
+		<small><b>And Friends</b></small>
+	</div>
+</div>

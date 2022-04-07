@@ -1,0 +1,91 @@
+{% load staticfiles %}
+
+<div class="animated fadeIn">
+	<div id="app-container" class="canvas-app-container">
+		<canvas id="canvas" class="canvas-app-canvas" tabindex="1" width="1700" height="960"></canvas>
+		<div class="button" onclick="Module.toggleFullscreen();">Fullscreen</div>
+	</div>
+</div>
+<script id='engine-loader' type='text/javascript' src="/static/js/client/dmloader.js"></script>
+<script id='engine-setup' type='text/javascript'>
+	var extra_params = {
+		archive_location_filter: function (path) {
+			return ("archive" + path + "");
+		},
+		engine_arguments: [],
+		custom_heap_size: 536870912,
+		disable_context_menu: true
+	}
+
+	Module['onRuntimeInitialized'] = function () {
+		Module.runApp("canvas", extra_params);
+	};
+
+	Module["locateFile"] = function (path, scriptDirectory) {
+		if (path == "dmengine.wasm" || path == "dmengine_release.wasm" || path == "dmengine_headless.wasm") {
+			path = "GameClient.wasm";
+		}
+		return scriptDirectory + path;
+	};
+	var is_iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+	var buttonHeight = 42;
+
+	function resize_game_canvas() {
+		if (is_iOS) {
+			window.scrollTo(0, 0);
+		}
+
+		var app_container = document.getElementById('app-container');
+		var game_canvas = document.getElementById('canvas');
+		var appheader = document.getElementById('app-header');
+		var appfooter = document.getElementById('app-footer');
+		var sidebar = document.getElementById('sidebar-menu');
+		var padding_container_left = 15;
+		var padding_container_right = 15;
+		var innerWidth = window.innerWidth -  sidebar.offsetWidth - padding_container_left - padding_container_right;
+		var innerHeight = window.innerHeight - appheader.offsetHeight - appfooter.offsetHeight; // 105px = appheader heigh + appfooter heigh
+		var width = 1700;
+		var height = 960;
+		var targetRatio = width / height;
+		var actualRatio = innerWidth / innerHeight;
+		
+		if (innerWidth < width || innerHeight < height) {
+			if (actualRatio > targetRatio) {
+				width = innerHeight * targetRatio;
+				height = innerHeight;
+				app_container.style.marginLeft = ((innerWidth - width) / 2) + "px";
+				app_container.style.marginTop = "0px";
+			} else {
+				width = innerWidth;
+				height = innerWidth / targetRatio;
+				app_container.style.marginLeft = "0px";
+				app_container.style.marginTop = ((innerHeight - height) / 2) + "px";
+			}
+		} else {
+			app_container.style.marginLeft = ((innerWidth - width) / 2) + "px";
+			app_container.style.marginTop = ((innerHeight - height) / 2) + "px";
+		}
+
+		app_container.style.width = width + "px";
+		app_container.style.height = height + "px";
+		game_canvas.width = width;
+		game_canvas.height = height;
+	}
+	resize_game_canvas();
+	window.addEventListener('resize', resize_game_canvas, false);
+	window.addEventListener('orientationchange', resize_game_canvas, false);
+
+	function load_engine() {
+		var engineJS = document.createElement('script');
+		engineJS.type = 'text/javascript';
+		if (Module['isWASMSupported']) {
+			engineJS.src = '/static/js/client/GameClient_wasm.js';
+		} else {
+			engineJS.src = '/static/js/client/GameClient_asmjs.js';
+		}
+		document.head.appendChild(engineJS);
+	}
+</script>
+<script id='engine-start' type='text/javascript'>
+	load_engine();
+</script>

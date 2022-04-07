@@ -1,0 +1,25 @@
+{% load staticfiles %}
+
+<div class="row justify-content-center" style="margin-top: 10%">
+    <div class="col-md-4">
+        <div class="card-group">
+            <div class="card p-4">
+                <form class="card-body" id="formresendtoken" action="/verify/{{uidb64}}/{{token}}" method="POST">
+                    {% csrf_token %}
+                    <h1>Verify Token Error</h1>
+                    <div class="row">
+                        <div class="col-12">
+                        <p id="text-msg" class="text-muted">This verify Token has been expired. Please request a new one
+                            and verify it</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-right">
+                            <a id="resendtoken" class="btn btn-primary px-4" href="#formresendtoken">Resend Email</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

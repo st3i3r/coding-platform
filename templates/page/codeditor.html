@@ -1,0 +1,288 @@
+{% load staticfiles backend_tags %}
+<div class="container-fluid">
+    <div id="ui-view" style="opacity: 1; margin-bottom: 10px;">
+        <div class="animated fadeIn">
+            <div class="row">
+				<!-- Code editor -->
+                <div class="col-md-8" id="codeview">
+                    <div class="border-primary">
+						<ul class="nav nav-tabs border-primary" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#challenge" id="tabproblem" role="tab"
+                                    aria-controls="home" aria-expanded="true"><i class="icon-doc"></i> Problem</a>
+                            </li>                       
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#codeeditor" id="tabcodeeditor" role="tab"
+                                    aria-controls="home" aria-expanded="true"><i class="icon-doc"></i> Code Editor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#submissions" id="submission-tab" role="tab"
+                                    aria-expanded="true"><i class="fa fa-book"></i> Submissions</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+							<div class="tab-pane active" id="challenge" role="tabpanel" aria-expanded="true">
+                                <script type="text/template" id="challenge-template">
+                                    <div class="row">
+                                        <div class="form-group col-sm-8">
+                                            <%= description %>
+                                        </div>
+                                    </div>
+                                </script>
+                            </div>
+							
+                            <div class="tab-pane" id="codeeditor" role="tabpanel" aria-expanded="true">
+                                <div class="row" id="toolmenu">
+                                    <div class="form-group col-sm-4 d-flex flex-row justify-content-begin align-items-center">
+                                        <select class="form-control mr-2" id="language">
+                                                <option value="cpp" selected> C++ (Gcc 5.4)</option>
+                                                <option value="java">Java (version 1.8)</option>
+                                                <option value="">Want more? please contact us</option>
+                                        </select>
+                                        <a id="reset-code" class="text-secondary fs-3" href="#">Reset</a>
+                                    </div>
+
+                                    <div class="form-group col-sm-8">
+                                        <a class="btn btn-outline-info float-right" style="margin-left: 10px;"
+                                            href="#fullscreen" target="_expand">
+                                            <i class="fa fa-angle-right" id="expandButton"></i>
+                                        </a>
+
+                                        <a class="btn btn-outline-info float-right" style="margin-left: 10px;" href="#"
+                                            data-target="#popupinfo" data-toggle="modal">
+                                            <i class="icon-info"></i>
+                                        </a>
+                                        <div class="input-group-btn float-right">
+                                            <button class="btn btn-primary enabled" id="submit">
+                                                <i class="icon-rocket"></i> Submit
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div id="editor" style="margin-left: -15px;min-height: 70vh"></div>
+
+                            </div>
+                            
+                            <!-- Submission tab --> 
+                            <div class="tab-pane" id="submissions" role="tabpanel" data-toggle="tab" aria-expanded="false">
+                            </div>
+
+                            <nav class="d-flex flex-row" id="pagination" aria-label="Page navigation example">
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4" id="console">
+                    <div class="border-primary mb-3">
+                        <ul class="nav nav-tabs border-primary" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#iframeResult" role="tab"
+                                    aria-expanded="true">
+                                    <i class="icon-fire"></i> Console
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="console-view" role="tabpanel" aria-expanded="true">
+								<div id="log-view">
+
+								</div>
+
+								<!-- Testcase Detail -->
+                                <div class="row" id="test-result">
+                                </div>
+
+                                <div id="test-result-detail">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="popupinfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"  aria-hidden="true">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-responsive-sm table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Clrl+Space</td>
+                            <td>Complete</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl+F</td>
+                            <td>Find</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl+H</td>
+                            <td>Replace</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl+/</td>
+                            <td>Toggle comment</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl-U</td>
+                            <td>Change to upper case</td>
+                        </tr>
+                        <tr>
+                            <td>Ctrl-Shift-U</td>
+                            <td>Change to lower case</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script src="{% static '/ace-builds/src-noconflict/ace.js' %}" type="text/javascript" charset="utf-8"></script>
+<script src="{% static '/ace-builds/src-noconflict/ext-language_tools.js' %}"></script>
+<script type="text/template" id="submission-detail-template">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="d-flex flex-column justify-content-begin mb-3">
+                <div>You made this submission 123123123 days ago</div>
+                <div>
+                    <span class="mr-5"><b>Score: </b><%- score %></span><span><b>Status: </b><%- status %></span>
+                </div>
+            </div>
+            <div>
+                <div class="font-weight-bold h6 mb-2">Submitted Code</div>
+                <div class="card-header d-flex flex-row justify-content-between">
+                    <div><span><b>Language: </b><%- compile_log.language %></span></div>
+                    <div><a class="btn btn-lge btn-sm" href="#challenge/<%- question %>/<%- uid %>">Open in editor</a></div>
+                </div>
+                <div class="card" id="submitted-code"></div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="submission-template">
+        <tr>
+            <td>
+                <% if (status === 'Wrong Answer') { %>
+                    <span class="text-danger"><%- status %></span>
+                <% } else if (status === 'Accepted') { %>
+                    <span class="text-success"><%- status %></span>
+                <% } else if (status === 'Compilation Error') { %>
+                    <span class="text-secondary"><%- status %></span>
+                <% } else { %>
+                    <span class="text"><%- status %></span>
+                <% } %>
+            </td>
+            <td><%- score %></td>
+            <td><%- compile_log.language %></td>
+            <td><%- parseDatetime(convertTZ(created_at, "Asia/Ho_Chi_Minh")) %></td>
+            <td><a class="btn btn-lge btn-sm" href="#submissions/<%- uid %>">View Result</a></td>
+        </tr>
+</script>
+<script type="text/template" id="test-result-template">
+    <div class="col-4">
+        <p>
+            <b class="testcase-item" id="testcase-<%- testcase.id %>" style="cursor: pointer; color: <%- color %>">Test case <%- testcase.tc_id %></b>
+            <%= result_icon_html %>
+        </p>
+    </div>
+</script>
+<script type="text/template" id="console-log-template">
+    <div class="mb-3 font-weight-bold" style="color: <%- color %>"><%- status %></div>
+    <% if (log !== null) { %>
+        <div class="card">
+            <div class="card-body" style="background: #f0f3f5">
+                <p><%= log %>
+            </div>
+        </div>
+    <% } %>
+</script>
+<script type="text/template" id="test-result-detail-template">
+    <div class="card-header">
+        <div class="card-header font-weight-bold" style="color: <%- color %>">Test case <%- testcase.tc_id %></div>
+        <div class="card-body">
+            <p class="card-title">Compiler Message</p>
+            <p class="list-group-item mb-4 font-weight-bold"><%- status %></p>
+            <p class="card-title">Input (stdin)</p>
+            <p class="list-group-item mb-4 font-weight-bold"><%- testcase.input_line %></p>
+            <p class="card-title">Your Output (stdout)</p>
+            <p class="list-group-item mb-4 font-weight-bold"><%- output %></p>
+            <p class="card-title">Expected Output</p>
+            <p class="list-group-item mb-4 font-weight-bold"><%- testcase.output %></p>
+        </div>
+    </div>
+</script>
+<script type="text/template" id="paginate-template">
+<span class="divider">/</span>
+        <% if (previous !== null) { %>
+            <a class="paginate" href='<%= previous %>'>Previous</a>
+        <% } else { %>
+            <span>Previous</span>
+        <% } %>
+
+        <% if (next !== null) { %>
+            <a class="paginate" href='<%= next %>' type="button" target="_blank">Next</a>
+        <% } %>
+
+        <span class="divider">/</span>
+        <span class="cell serverhowmany">
+            Show
+            <a href="#" class="selected">3</a>
+            |
+            <a href="#" class="">9</a>
+            |
+            <a href="#" class="">12</a>
+            per page
+        </span>
+
+        <span class="divider">/</span>
+        <span class="cell first records">
+            Page: <span class="current">1</span>
+            of
+            <span class="total">12</span>
+                        shown
+        </span>
+
+    <span class="divider">/</span>
+    <span class="cell sort">
+        <a href="#" class="orderUpdate btn small">Sort by:</a>
+    </span>
+
+    <select id="sortByField">
+        <option value="cid">Select a field to sort on</option>
+        <option value="ReleaseYear">Release year</option>
+        <option value="ShortName">Alphabetical</option>
+    </select>
+</script>
+<script type="text/javascript">
+    function convertTZ(date, tzString) {
+        return new Date((typeof date === "string" ? new Date(date) : date).toLocaleString("en-US", {timeZone: tzString}));
+    }
+
+    function parseDatetime(m) {
+         return m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
+    }
+</script>

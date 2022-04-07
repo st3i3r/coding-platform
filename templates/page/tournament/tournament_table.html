@@ -1,0 +1,23 @@
+{% load staticfiles backend_tags %}
+<table class="table table-responsive-sm table-bordered" id="table-matches">
+	<thead>
+		<tr>
+			<th>Match ID</th>
+			<th>Status</th>
+			<th>Created</th>
+			<th>Replay</th>
+		</tr>
+	</thead>
+	<tbody id="list-matches">
+		{% for match in listmatch %}
+		<tr>
+			<td>
+				{{ forloop.counter }}
+			</td>
+			<td>{{ match.status|getStatusMatch|safe }}</td>
+			<td>{{ match.created|date:"d/m/Y - H:i:s"  }}</td>
+			<td>{{ match.view_replay|safe }}</td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>

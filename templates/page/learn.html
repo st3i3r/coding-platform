@@ -1,0 +1,35 @@
+<div class="container-fluid">
+    <div id="ui-view" style="opacity: 1; margin-bottom: 10px;">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="nav nav-item d-md-down-none">
+                                {% for list in category %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href=#docs/{{ list.title }}>{{ list.title }} </a> 
+                                        <ul class="">
+                                        {% for article in list.article.all %}
+                                            <li class="">
+                                                <a class="nav-link" href=#docs/article/{{ article.id }}/{{ article.url }}>{{ article.title }} </a>
+                                            </li> 
+                                        {% endfor %} 
+                                        </ul> 
+                                    </li> 
+                                {% endfor %} 
+                            </ul> 
+                        </div> 
+                    </div> 
+                </div> 
+                <div class="col-md-9">
+                    <div class="card">
+                        <div class="card-body">
+                            {{ article.content|safe|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

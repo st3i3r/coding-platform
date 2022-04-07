@@ -1,0 +1,177 @@
+<!-- {% load staticfiles %} -->
+{% load staticfiles backend_tags %}
+
+<div class="container-fluid">
+    <div id="ui-view" style="opacity: 1; margin-bottom: 10px;">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- List Match -->
+                    <div class="card">
+                        <div class="card-header">
+                        {% if keyword %}
+                            <strong>Match List has contained '{{ keyword }}'</strong>
+                        {% else %}
+                            <strong>Match List</strong>
+                        {% endif %}
+                        </div>
+                        <div class="card-body">
+                            {% if not custom_match%}
+                            <form id="searchForm" class="form-horizontal" onkeydown="return event.key != 'Enter';">
+                                <div class="row">
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-prepend">
+                                                    <button type="button" class="btn btn-secondary">
+                                                        <i class="fa fa-search"></i></button>
+                                                </span>
+                                                <input name="search" id="search" class="form-control"
+                                                    placeholder="Bot name" type="text">
+                                                <button type="button" onClick="search_click()" id="btnSearch"
+                                                    class="btn btn-primary mb-6">Search</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            {% endif %}
+                            <table class="table table-responsive-sm table-bordered" id="table-matches">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Bot</th>
+                                        <th>Status</th>
+                                        <th>Rank in Match</th>
+                                        <th>Created</th>
+                                        <th>Log</th>
+                                        <th>Replay</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="list-matches">
+                                    {% for match in listMatch %}
+                                    <tr>
+                                        <td>
+                                            {% if match.isFinish %}
+                                            <a href="#" data-target="#popuprank-{{match.id}}" data-toggle="modal">
+                                                {{ forloop.counter|getIDFollowPage:page }}
+                                            </a>
+                                            {% else %}
+                                                {{ forloop.counter|getIDFollowPage:page }}
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ match.bot }} - ({{match.bot.user}})</td>
+                                        <td>{{ match.status|getStatusMatch|safe }}</td>
+                                        <td>{{ match.getRankofOwner }}</td>
+                                        <td>{{ match.created|date:"d/m/Y - H:i:s"  }}</td>
+                                        <td>{{ match.view_log|safe }}</td>
+                                        <td>{{ match.view_replay|safe }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% if keyword %}
+                                <a id="button_back" data-toggle="modal" href="#matches" role="button"><i class="fa fa-arrow-left"></i> Back</a>
+                            {% endif %}
+                            <nav>
+                                {% if listMatch.has_other_pages %}
+                                <ul class="pagination">
+                                    {% if listMatch.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="/#matches?page={{ listMatch.previous_page_number }}">Prev</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link disabled">Prev</a>
+                                    </li>
+                                    {% endif %}
+                                    {% for i in listMatch.paginator.page_range %}
+                                    {% if listMatch.number == i %}
+                                    <li class="page-item active">
+                                        <span> <a class="page-link"> {{ i }} </a><span
+                                                class="sr-only">(current)</span></span>
+                                    </li>
+                                    {% elif i > listMatch.number|add:'-3' and i < listMatch.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="/#matches?page={{ i }}">{{ i }}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if listMatch.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link"
+                                            href="/#matches?page={{ listMatch.next_page_number }}">Next</a>
+                                    </li>
+                                    {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link disabled">Next</a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                                {% endif %}
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- End List Match -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% for rival in listRival %}
+<div class="modal fade" id="popuprank-{{ rival.matchid }}" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Rank Rival List</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">  
+                <table class="table table-responsive-sm table-bordered" id="table-rank">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Bot rival</th>
+                            <th>Rank</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list-rank">
+                        {% for rank in rival.rank %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ rank.getBotName }} - ({{rank.bot.user}})</td>
+                            <td>{{ rank.getRank }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<script type="text/javascript">
+    var input = document.getElementById("search");
+    input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            document.getElementById("btnSearch").click();
+        }
+    });
+
+    function search_click() {
+        var key_Search = document.getElementById("search").value;
+        if (key_Search) {
+            window.location.replace("/#matches/" + key_Search)
+            location.reload();
+        }
+    }
+</script>

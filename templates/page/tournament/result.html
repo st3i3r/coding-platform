@@ -1,0 +1,45 @@
+{% for round in data %}
+	{% for group in round.groups %}
+		<div class="modal fade" id="result-round-{{round.id}}-group-{{group.id}}"  tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog modal-primary" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Result for {{ group.name }} in {{ round.name }}</h4>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<table class="table table-responsive-sm table-bordered" id="table-rank">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Bot</th>
+									<th>Score</th>
+									<th>Kills</th>
+									<th>Damge</th>
+									<th>Total Score</th>
+								</tr>
+							</thead>
+							<tbody id="list-rank">
+							{% for rank in group.ranks %}
+								<tr>
+									<td>{{ forloop.counter }}</td>
+									<td>{{ rank.name }} - ({{rank.user}})</td>
+									<td>{{ rank.score }}</td>
+									<td>{{ rank.kill }}</td>
+									<td>{{ rank.damge }}</td>
+									<td>{{ rank.total }}</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+</div>
+	{% endfor %}
+{% endfor %}
