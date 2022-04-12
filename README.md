@@ -1,9 +1,9 @@
 ## Create virtual env
-python3 -m venv venv
-source venv/bin/activate
+<code>python3 -m venv venv
+source venv/bin/activate</code>
 
 ## Install dependencies
-pip install -r requirements.in
+<code>pip install -r requirements.in</code>
 
 ## Run application
 ### Redis
