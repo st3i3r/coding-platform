@@ -3,7 +3,6 @@ from django.db.models import QuerySet
 
 from django.contrib.auth.models import User, AnonymousUser
 from asgiref.sync import async_to_sync
-from channels.layers import get_channel_layer
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 
@@ -34,17 +33,6 @@ def user_directory_path(instance, filename):
     if hasattr(instance, 'user'):
         return '{0}/{1}_{2}'.format(instance.user.username, randomString(), filename)
     return '{0}_{1}'.format(randomString(), filename)
-
-
-def send_message(channel_name, message):
-    async_to_sync(get_channel_layer().send)(channel_name, {
-        "type": "sendData",
-        "message": message.get("message"),
-        "type_msg": message.get('type_msg', "toast"),
-        "status": message["status"],
-        "data": message.get("data", None)
-    })
-
 
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)

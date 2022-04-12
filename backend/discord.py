@@ -1,5 +1,3 @@
-from django.http import HttpResponse, Http404
-from .utils import send_message
 from celery import task
 from celery.result import AsyncResult
 from django.conf import settings

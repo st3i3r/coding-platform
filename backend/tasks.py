@@ -10,10 +10,9 @@ from django.utils.encoding import smart_str
 from django.db.models import Sum
 from wsgiref.util import FileWrapper
 
-from .utils import send_message, randomString, getpathforUser
+from .utils import randomString, getpathforUser
 from .models import *
 from .discord import *
-from .portal import StartBattle
 
 from celery import task
 from celery.result import AsyncResult
